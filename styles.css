@@ -8,9 +8,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #111;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #111 0%, #2c2c2c 100%);
     font-family: 'Arial', sans-serif;
+    color: #fff;
 }
 
 .container {
@@ -18,28 +19,71 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 80%;
+    gap: 2rem;
+    padding: 2rem;
 }
 
 .text-section {
-    color: #fff;
+    flex: 1;
 }
 
 .text-section h1 {
-    font-size: 6rem;
+    font-size: 5rem;
     line-height: 1.2;
     color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
 }
+
 .text-section h1 span {
     font-weight: bold;
     color: #fff;
-    text-shadow: 0 0 50px rgba(255, 255, 255, 0.2); /* Add a light glow effect */
-    font-size: 7rem; /* Make the "NOTHING" text larger */
+    text-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    font-size: 6rem;
+    background: linear-gradient(45deg, #fff, #aaa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: text-shadow 0.3s ease;
 }
 
-.text-section p {
+.text-section h1 span:hover {
+    text-shadow: 0 0 70px rgba(255, 255, 255, 0.4);
+}
+
+.subtitle {
+    font-size: 2.5rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.comeback-text {
     margin-top: 20px;
-    font-size: 1.5rem;  /* Increased subtext size */
+    font-size: 1.5rem;
     color: #bbb;
+    transition: color 0.3s ease;
+}
+
+.music-text {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    color: #888;
+    font-style: italic;
+    transition: color 0.3s ease;
+}
+
+.comeback-text:hover,
+.music-text:hover {
+    color: #fff;
+}
+
+.image-section {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-section img {
@@ -47,6 +91,95 @@ body {
     height: 450px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 0 100px 50px rgba(255, 255, 255, 0.2); /* Add a light glow effect */
-    filter: brightness(1.2) contrast(1.1) blur(0.5px); /* Add a light filter effect */
+    box-shadow: 0 0 100px 50px rgba(255, 255, 255, 0.1);
+    filter: brightness(1.2) contrast(1.1) blur(0.5px);
+    transition: box-shadow 0.3s ease;
+}
+
+.image-section:hover img {
+    box-shadow: 0 0 120px 60px rgba(255, 255, 255, 0.15);
+}
+
+.music-player {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.music-control {
+    background: none;
+    border: 2px solid #fff;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.music-control:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.volume-control i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+#volume-slider {
+    width: 100px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .text-section h1 {
+        font-size: 4rem;
+    }
+
+    .text-section h1 span {
+        font-size: 5rem;
+    }
+
+    .subtitle {
+        font-size: 2rem;
+    }
+
+    .image-section img {
+        width: 350px;
+        height: 350px;
+    }
+
+    .music-player {
+        justify-content: center;
+    }
 }
