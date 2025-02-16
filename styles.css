@@ -12,8 +12,71 @@ body {
     background: linear-gradient(135deg, #111 0%, #2c2c2c 100%);
     font-family: 'Arial', sans-serif;
     color: #fff;
+    overflow-x: hidden;
 }
 
+/* Fog Effect */
+.fog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 0;
+}
+
+.fog-container.visible {
+    opacity: 1;
+}
+
+.fog {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+}
+
+#foglayer_01, #foglayer_02, #foglayer_03 {
+    width: 200%;
+    height: 100%;
+}
+
+.fog .image01, .fog .image02 {
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+#foglayer_01 {
+    animation: 
+        foglayer_01_opacity 30s linear infinite,
+        foglayer_moveme 30s linear infinite;
+}
+
+#foglayer_02 {
+    animation: 
+        foglayer_02_opacity 30s linear infinite,
+        foglayer_moveme 28s linear infinite;
+}
+
+#foglayer_03 {
+    animation: 
+        foglayer_03_opacity 30s linear infinite,
+        foglayer_moveme 35s linear infinite;
+}
+
+.fog .image01, .fog .image02 {
+    background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog1.png") center center/cover no-repeat transparent;
+}
+
+#foglayer_02 .image01, #foglayer_02 .image02,
+#foglayer_03 .image01, #foglayer_03 .image02 {
+    background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png") center center/cover no-repeat transparent;
+}
+
+/* Container */
 .container {
     display: flex;
     align-items: center;
@@ -21,8 +84,11 @@ body {
     width: 80%;
     gap: 2rem;
     padding: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
+/* Text Section */
 .text-section {
     flex: 1;
 }
@@ -47,10 +113,6 @@ body {
     transition: text-shadow 0.3s ease;
 }
 
-.text-section h1 span:hover {
-    text-shadow: 0 0 70px rgba(255, 255, 255, 0.4);
-}
-
 .subtitle {
     font-size: 2.5rem;
     color: #aaa;
@@ -73,13 +135,16 @@ body {
     transition: color 0.3s ease;
 }
 
-.comeback-text:hover,
-.music-text:hover {
-    color: #fff;
+.timestamp {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #666;
+    font-family: monospace;
+    transition: color 0.3s ease;
 }
 
+/* Image Section */
 .image-section {
-    position: relative;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -96,10 +161,7 @@ body {
     transition: box-shadow 0.3s ease;
 }
 
-.image-section:hover img {
-    box-shadow: 0 0 120px 60px rgba(255, 255, 255, 0.15);
-}
-
+/* Music Player */
 .music-player {
     margin-top: 2rem;
     display: flex;
@@ -120,11 +182,6 @@ body {
     justify-content: center;
     font-size: 1.2rem;
     transition: all 0.3s ease;
-}
-
-.music-control:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
 }
 
 .volume-control {
@@ -156,6 +213,35 @@ body {
     cursor: pointer;
 }
 
+/* Fog Animations */
+@keyframes foglayer_01_opacity {
+    0%, 100% { opacity: .1; }
+    22% { opacity: .2; }
+    40% { opacity: .15; }
+    58% { opacity: .2; }
+    80% { opacity: .1; }
+}
+
+@keyframes foglayer_02_opacity {
+    0%, 100% { opacity: .15; }
+    25% { opacity: .2; }
+    50% { opacity: .1; }
+    80% { opacity: .15; }
+}
+
+@keyframes foglayer_03_opacity {
+    0%, 100% { opacity: .18; }
+    27% { opacity: .12; }
+    52% { opacity: .2; }
+    68% { opacity: .15; }
+}
+
+@keyframes foglayer_moveme {
+    0% { left: 0; }
+    100% { left: -100%; }
+}
+
+/* Responsive Design */
 @media (max-width: 1200px) {
     .container {
         flex-direction: column;
