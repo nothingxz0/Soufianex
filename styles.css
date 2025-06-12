@@ -1,4 +1,3 @@
-/* Original CSS with additions */
 * {
     margin: 0;
     padding: 0;
@@ -13,10 +12,12 @@ body {
     background: linear-gradient(135deg, #111 0%, #2c2c2c 100%);
     font-family: 'Arial', sans-serif;
     color: #fff;
-    overflow: hidden;
-    padding-bottom: 70px; /* Space for the footer */
+    overflow-x: hidden;
+    /* Added padding to prevent footer from overlapping content */
+    padding-bottom: 70px; 
 }
 
+/* Fog Effect - with modifications for interactive parallax */
 .fog-container {
     position: fixed;
     top: -10%;
@@ -25,7 +26,7 @@ body {
     height: 120%;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 1s ease, transform 0.2s linear;
+    transition: opacity 1s ease;
     z-index: 0;
 }
 
@@ -42,6 +43,7 @@ body {
 #foglayer_01, #foglayer_02, #foglayer_03 {
     width: 200%;
     height: 100%;
+    /* Added transition for smooth parallax effect */
     transition: transform 0.5s ease-out;
 }
 
@@ -78,6 +80,7 @@ body {
     background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png") center center/cover no-repeat transparent;
 }
 
+/* Original Container - UNCHANGED */
 .container {
     display: flex;
     align-items: center;
@@ -89,6 +92,7 @@ body {
     z-index: 1;
 }
 
+/* Original Text Section - UNCHANGED */
 .text-section {
     flex: 1;
 }
@@ -127,12 +131,13 @@ body {
     transition: color 0.3s ease;
 }
 
+/* --- NEW --- Style for the permanent message */
 .permanent-message {
     font-size: 1.1rem;
-    color: #666; /* Made slightly more visible */
+    color: #666;
     font-style: italic;
     margin-top: 1rem;
-    opacity: 1; /* Always visible */
+    opacity: 1;
 }
 
 .music-text {
@@ -151,6 +156,7 @@ body {
     transition: color 0.3s ease;
 }
 
+/* Original Image Section - UNCHANGED */
 .image-section {
     flex: 1;
     display: flex;
@@ -168,6 +174,7 @@ body {
     transition: box-shadow 0.3s ease;
 }
 
+/* Original Music Player - UNCHANGED */
 .music-player {
     margin-top: 2rem;
     display: flex;
@@ -219,11 +226,13 @@ body {
     cursor: pointer;
 }
 
+/* Original Fog Animations - UNCHANGED */
 @keyframes foglayer_01_opacity { 0%, 100% { opacity: .1; } 22% { opacity: .2; } 40% { opacity: .15; } 58% { opacity: .2; } 80% { opacity: .1; } }
 @keyframes foglayer_02_opacity { 0%, 100% { opacity: .15; } 25% { opacity: .2; } 50% { opacity: .1; } 80% { opacity: .15; } }
 @keyframes foglayer_03_opacity { 0%, 100% { opacity: .18; } 27% { opacity: .12; } 52% { opacity: .2; } 68% { opacity: .15; } }
 @keyframes foglayer_moveme { 0% { left: 0; } 100% { left: -100%; } }
 
+/* --- NEW --- Styles for the search bar footer */
 .search-bar {
     position: fixed;
     bottom: 0;
@@ -248,6 +257,7 @@ body {
 #search-form label {
     color: #aaa;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 #search-question {
@@ -275,6 +285,7 @@ body {
     background: #fff;
 }
 
+/* Original Responsive Design - UNCHANGED */
 @media (max-width: 1200px) {
     .container { flex-direction: column; text-align: center; }
     .text-section h1 { font-size: 4rem; }
