@@ -1,20 +1,19 @@
-// This script is almost identical to the last one, ensuring it works with the corrected HTML/CSS
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element References ---
     const profileImage = document.getElementById('profile-image');
     const audio = document.getElementById('background-music');
     const playPauseBtn = document.getElementById('play-pause');
-    const volumeSlider = document.getElementById('volume-slider');
     const timeDisplay = document.getElementById('current-time');
     const fogContainer = document.querySelector('.fog-container');
     const searchForm = document.getElementById('search-form');
     const searchQuestion = document.getElementById('search-question');
+    const audioProgress = document.getElementById('audio-progress');
     const fogLayers = [
         document.getElementById('foglayer_01'),
         document.getElementById('foglayer_02'),
         document.getElementById('foglayer_03')
     ];
-
+    
     // --- State and Config ---
     let rotation = 0;
     let isPlaying = false;
@@ -35,6 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeString = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
         if(timeDisplay) {
             timeDisplay.textContent = timeString;
+        }
+    }
+    
+    // Update audio progress bar
+    function updateProgress() {
+        if (audio && audioProgress && !isNaN(audio.duration)) {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            audioProgress.style.width = `${progress}%`;
         }
     }
     
@@ -72,18 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if(audio) {
+        // Update progress as audio plays
+        audio.addEventListener('timeupdate', updateProgress);
+        
         audio.addEventListener('ended', () => {
             if (!audio.loop) {
                 isPlaying = false;
                 playPauseBtn.querySelector('i').className = 'fas fa-play';
                 fogContainer.classList.remove('visible');
             }
-        });
-    }
-
-    if(volumeSlider) {
-        volumeSlider.addEventListener('input', (e) => {
-            audio.volume = e.target.value / 100;
         });
     }
 
@@ -99,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     document.addEventListener('visibilitychange', () => {
         if (document.hidden && animationFrameId) {
             cancelAnimationFrame(animationFrameId);
@@ -112,7 +117,4 @@ document.addEventListener('DOMContentLoaded', () => {
     animationFrameId = requestAnimationFrame(rotateImage);
     setInterval(updateTimestamp, 1000);
     updateTimestamp();
-    if(audio && volumeSlider) {
-        audio.volume = volumeSlider.value / 100;
-    }
 });
