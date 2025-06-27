@@ -197,20 +197,21 @@ body {
 
 /* ===== IMAGE SECTION MODIFIED ===== */
 .image-section {
-    flex: 0 0 45%; /* Force container to be 50% of the width */
-    height: 100vh; /* Make container full height */
+    flex: 0 0 50%;
+    height: 100vh;
     display: flex;
+    /* Center the image horizontally and vertically */
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
 .image-section img {
-    width: 300%; /* Image fills its container width */
-    height: 300%; /* Image fills its container height */
-    object-fit: contain; /* Ensures the image fits without being cropped */
-    object-position: center; /* Center the image within its container */
-    transform: none;
+    width: 300%;
+    height: 300%;
+    object-fit: contain;
+    object-position: center;
+    /* Nudge the image down and to the left */
+    transform: translate(-5vw, 15vh);
 }
 /* ================================= */
 
@@ -361,6 +362,7 @@ body {
     .image-section img {
         position: static; /* Reset positioning */
         max-width: 400px;
+        transform: none; /* Reset transform on mobile */
     }
     .side-text {
         display: none;
