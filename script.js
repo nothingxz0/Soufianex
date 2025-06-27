@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchForm = document.getElementById('search-form');
     const searchQuestion = document.getElementById('search-question');
     const audioProgress = document.getElementById('audio-progress');
+    const projectsStat = document.getElementById('projects-stat'); // Clickable stat
+    const projectDetails = document.getElementById('project-details'); // Hidden list
     const fogLayers = [
         document.getElementById('foglayer_01'),
         document.getElementById('foglayer_02'),
@@ -18,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPlaying = false;
     
     // --- Core Functions ---
-    // ROTATION FUNCTION REMOVED
-    
     function updateTimestamp() {
         const now = new Date();
         const pad = num => String(num).padStart(2, '0');
@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Update audio progress bar
     function updateProgress() {
         if (audio && audioProgress && !isNaN(audio.duration)) {
             const progress = (audio.currentTime / audio.duration) * 100;
@@ -37,12 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Logic for interactive fog
     function handleMouseMove(e) {
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
-        const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-        const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+        const x = (clientX / innerWidth - 0.5) * 2;
+        const y = (clientY / innerHeight - 0.5) * 2;
 
         if (fogLayers[0] && fogLayers[1] && fogLayers[2]) {
             fogLayers[0].style.transform = `translate(${x * 15}px, ${y * 10}px)`;
@@ -53,6 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     document.addEventListener('mousemove', handleMouseMove);
+
+    // NEW: Click listener for projects
+    if(projectsStat && projectDetails) {
+        projectsStat.addEventListener('click', () => {
+            projectDetails.classList.toggle('visible');
+        });
+    }
 
     if(playPauseBtn) {
         playPauseBtn.addEventListener('click', () => {
