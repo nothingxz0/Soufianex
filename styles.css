@@ -4,276 +4,20 @@
     box-sizing: border-box;
 }
 
-:root {
-    /* Restored dark theme */
-    --primary-bg: #111;
-    --secondary-bg: #2c2c2c;
-    --text-bright: #fff;
-    --text-medium: #aaa;
-    --text-dim: #666;
-    --border-color: rgba(255, 255, 255, 0.1);
-    --accent: rgba(255, 255, 255, 0.8);
-}
-
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
-    color: var(--text-bright);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    overflow: hidden; /* Prevent scrollbars from the large layout */
-    display: flex;
-    flex-direction: column;
-}
-
-/* Navigation */
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 4rem;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 100;
-}
-
-.logo {
-    font-weight: 600;
-    font-size: 1.5rem;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: var(--text-bright);
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.github-link {
-    font-size: 1.8rem;
-    color: var(--text-medium);
-    transition: all 0.3s ease;
-}
-
-.github-link:hover {
-    color: var(--text-bright);
-    transform: scale(1.1);
-}
-
-.search-container {
-    position: relative;
-}
-
-#search-form {
-    display: flex;
-    align-items: center;
-}
-
-#search-question {
-    padding: 0.6rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 2rem;
+    background: linear-gradient(135deg, #111 0%, #2c2c2c 100%);
     font-family: 'Arial', sans-serif;
-    font-size: 0.9rem;
-    width: 180px;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-bright);
-    outline: none;
-    transition: all 0.3s;
-}
-
-#search-question:focus {
-    width: 220px;
-    border-color: var(--text-medium);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-#search-form button {
-    background: none;
-    border: none;
-    margin-left: -2.5rem;
-    color: var(--text-medium);
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-/* Side text elements */
-.side-text {
-    position: fixed;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-dim);
-    white-space: nowrap;
-    z-index: 10;
-}
-
-.left {
-    left: 2rem;
-    bottom: 50%;
-    transform: rotate(-90deg);
-    transform-origin: left;
-}
-
-.right {
-    right: 2rem;
-    bottom: 50%;
-    transform: rotate(90deg);
-    transform-origin: right;
-}
-
-/* Main container */
-.container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    padding: 0; /* Remove padding to allow 50/50 split */
-    align-items: center;
-    justify-content: space-between;
-}
-
-/* ===== CONTENT SECTION MODIFIED ===== */
-.content-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3rem;
-    padding-left: 6rem; /* Add padding here instead of on container */
-    padding-right: 2rem;
-    /* Add position and z-index to create a stacking context */
-    position: relative;
-    z-index: 3; 
-}
-
-.stats {
-    display: flex;
-    gap: 3rem;
-    margin-bottom: 1rem;
-}
-
-.stat h3 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--text-bright);
-}
-
-.stat p {
-    font-size: 0.9rem;
-    color: var(--text-medium);
-}
-
-.headline h1 {
-    font-size: 5rem;
-    line-height: 1.2;
-    color: white;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    margin-bottom: 0.5rem;
-}
-
-.headline h1 span {
-    font-weight: bold;
     color: #fff;
-    text-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
-    font-size: 6rem;
-    background: linear-gradient(45deg, #fff, #aaa);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: text-shadow 0.3s ease;
+    overflow-x: hidden;
+    /* Added padding to prevent footer from overlapping content */
+    padding-bottom: 70px; 
 }
 
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--text-medium);
-    padding-left: 2px;
-    font-style: italic;
-}
-
-/* ===== IMAGE SECTION MODIFIED ===== */
-.image-section {
-    flex: 0 0 50%;
-    height: 100vh;
-    display: flex;
-    /* Center the image horizontally and vertically */
-    justify-content: center;
-    align-items: center;
-    z-index: 2; /* Set z-index to be higher than fog, but lower than content */
-    position: relative; /* z-index requires a position property */
-}
-
-.image-section img {
-    width: 300%;
-    height: 300%;
-    object-fit: contain;
-    object-position: center;
-    /* Nudge the image down and to the left */
-    transform: translate(-6vw, 19vh);
-}
-/* ================================= */
-
-
-.music-player {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.music-control {
-    background: none;
-    border: 2px solid var(--accent);
-    color: var(--text-bright);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
-}
-
-.music-control:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.progress-container {
-    flex: 1;
-    max-width: 200px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-}
-
-.audio-progress {
-    height: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    width: 0%;
-    border-radius: 2px;
-    transition: width 0.1s linear;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
-
-.timestamp {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    font-family: monospace;
-}
-
+/* Fog Effect - with modifications for interactive parallax */
 .fog-container {
     position: fixed;
     top: -10%;
@@ -283,7 +27,7 @@ body {
     pointer-events: none;
     opacity: 0;
     transition: opacity 1s ease;
-    z-index: 0; /* Fog is at the bottom of the stack */
+    z-index: 0;
 }
 
 .fog-container.visible {
@@ -299,6 +43,7 @@ body {
 #foglayer_01, #foglayer_02, #foglayer_03 {
     width: 200%;
     height: 100%;
+    /* Added transition for smooth parallax effect */
     transition: transform 0.5s ease-out;
 }
 
@@ -335,40 +80,217 @@ body {
     background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png") center center/cover no-repeat transparent;
 }
 
+/* Original Container - UNCHANGED */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    gap: 2rem;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Original Text Section - UNCHANGED */
+.text-section {
+    flex: 1;
+}
+
+.text-section h1 {
+    font-size: 5rem;
+    line-height: 1.2;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.text-section h1 span {
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    font-size: 6rem;
+    background: linear-gradient(45deg, #fff, #aaa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: text-shadow 0.3s ease;
+}
+
+.subtitle {
+    font-size: 2.5rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.comeback-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #bbb;
+    transition: color 0.3s ease;
+}
+
+/* --- NEW --- Style for the permanent message */
+.permanent-message {
+    font-size: 1.1rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 1rem;
+    opacity: 1;
+}
+
+.music-text {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    color: #888;
+    font-style: italic;
+    transition: color 0.3s ease;
+}
+
+.timestamp {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #666;
+    font-family: monospace;
+    transition: color 0.3s ease;
+}
+
+/* Original Image Section - UNCHANGED */
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-section img {
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 100px 50px rgba(255, 255, 255, 0.1);
+    filter: brightness(1.2) contrast(1.1) blur(0.5px);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Original Music Player - UNCHANGED */
+.music-player {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.music-control {
+    background: none;
+    border: 2px solid #fff;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.volume-control i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+#volume-slider {
+    width: 100px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Original Fog Animations - UNCHANGED */
 @keyframes foglayer_01_opacity { 0%, 100% { opacity: .1; } 22% { opacity: .2; } 40% { opacity: .15; } 58% { opacity: .2; } 80% { opacity: .1; } }
 @keyframes foglayer_02_opacity { 0%, 100% { opacity: .15; } 25% { opacity: .2; } 50% { opacity: .1; } 80% { opacity: .15; } }
 @keyframes foglayer_03_opacity { 0%, 100% { opacity: .18; } 27% { opacity: .12; } 52% { opacity: .2; } 68% { opacity: .15; } }
 @keyframes foglayer_moveme { 0% { left: 0; } 100% { left: -100%; } }
 
-/* Responsive design */
-@media (max-width: 900px) {
-    body {
-        overflow: auto; /* Allow scrolling on mobile */
-    }
-    .container {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        padding: 8rem 2rem 4rem; /* Restore padding for mobile view */
-        text-align: center;
-    }
-    .content-section {
-        align-items: center;
-        padding: 0;
-    }
-    .image-section {
-        order: -1;
-        flex-basis: auto; /* Reset flex-basis */
-        width: 100%;
-        height: auto;
-        margin-bottom: 2rem;
-    }
-    .image-section img {
-        position: static; /* Reset positioning */
-        max-width: 400px;
-        transform: none; /* Reset transform on mobile */
-    }
-    .side-text {
-        display: none;
-    }
+/* --- NEW --- Styles for the search bar footer */
+.search-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid #444;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+#search-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#search-form label {
+    color: #aaa;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+#search-question {
+    flex-grow: 1;
+    background: #222;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-family: inherit;
+}
+
+#search-form button {
+    background: #ddd;
+    color: #111;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#search-form button:hover {
+    background: #fff;
+}
+
+/* Original Responsive Design - UNCHANGED */
+@media (max-width: 1200px) {
+    .container { flex-direction: column; text-align: center; }
+    .text-section h1 { font-size: 4rem; }
+    .text-section h1 span { font-size: 5rem; }
+    .subtitle { font-size: 2rem; }
+    .image-section img { width: 350px; height: 350px; }
+    .music-player { justify-content: center; }
 }

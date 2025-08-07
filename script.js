@@ -1,25 +1,34 @@
+// This script is almost identical to the last one, ensuring it works with the corrected HTML/CSS
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element References ---
     const profileImage = document.getElementById('profile-image');
     const audio = document.getElementById('background-music');
     const playPauseBtn = document.getElementById('play-pause');
+    const volumeSlider = document.getElementById('volume-slider');
     const timeDisplay = document.getElementById('current-time');
     const fogContainer = document.querySelector('.fog-container');
     const searchForm = document.getElementById('search-form');
     const searchQuestion = document.getElementById('search-question');
-    const audioProgress = document.getElementById('audio-progress');
-    const projectsStat = document.getElementById('projects-stat'); // Clickable stat
-    const projectDetails = document.getElementById('project-details'); // Hidden list
     const fogLayers = [
         document.getElementById('foglayer_01'),
         document.getElementById('foglayer_02'),
         document.getElementById('foglayer_03')
     ];
-    
+
     // --- State and Config ---
+    let rotation = 0;
     let isPlaying = false;
-    
+    let animationFrameId = null;
+
     // --- Core Functions ---
+    function rotateImage() {
+        rotation = (rotation + 0.1) % 360;
+        if(profileImage) {
+            profileImage.style.transform = `rotate(${rotation}deg)`;
+        }
+        animationFrameId = requestAnimationFrame(rotateImage);
+    }
+
     function updateTimestamp() {
         const now = new Date();
         const pad = num => String(num).padStart(2, '0');
@@ -29,18 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function updateProgress() {
-        if (audio && audioProgress && !isNaN(audio.duration)) {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            audioProgress.style.width = `${progress}%`;
-        }
-    }
-    
+    // Logic for interactive fog
     function handleMouseMove(e) {
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
-        const x = (clientX / innerWidth - 0.5) * 2;
-        const y = (clientY / innerHeight - 0.5) * 2;
+        const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
+        const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
 
         if (fogLayers[0] && fogLayers[1] && fogLayers[2]) {
             fogLayers[0].style.transform = `translate(${x * 15}px, ${y * 10}px)`;
@@ -51,13 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     document.addEventListener('mousemove', handleMouseMove);
-
-    // NEW: Click listener for projects
-    if(projectsStat && projectDetails) {
-        projectsStat.addEventListener('click', () => {
-            projectDetails.classList.toggle('visible');
-        });
-    }
 
     if(playPauseBtn) {
         playPauseBtn.addEventListener('click', () => {
@@ -76,13 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if(audio) {
-        audio.addEventListener('timeupdate', updateProgress);
         audio.addEventListener('ended', () => {
             if (!audio.loop) {
                 isPlaying = false;
                 playPauseBtn.querySelector('i').className = 'fas fa-play';
                 fogContainer.classList.remove('visible');
             }
+        });
+    }
+
+    if(volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value / 100;
         });
     }
 
@@ -98,7 +99,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        } else if (!document.hidden && !animationFrameId) {
+            animationFrameId = requestAnimationFrame(rotateImage);
+        }
+    });
+
     // --- Initializations ---
+    animationFrameId = requestAnimationFrame(rotateImage);
     setInterval(updateTimestamp, 1000);
     updateTimestamp();
+    if(audio && volumeSlider) {
+        audio.volume = volumeSlider.value / 100;
+    }
 });
