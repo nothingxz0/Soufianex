@@ -1,97 +1,105 @@
-// This script is almost identical to the last one, ensuring it works with the corrected HTML/CSS
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Element References ---
+    // DOM references
     const profileImage = document.getElementById('profile-image');
+    const imageControl = document.getElementById('image-control');
+    const overlayIcon = document.getElementById('image-overlay-icon');
     const audio = document.getElementById('background-music');
-    const playPauseBtn = document.getElementById('play-pause');
-    const volumeSlider = document.getElementById('volume-slider');
     const timeDisplay = document.getElementById('current-time');
-    const fogContainer = document.querySelector('.fog-container');
     const searchForm = document.getElementById('search-form');
     const searchQuestion = document.getElementById('search-question');
-    const fogLayers = [
-        document.getElementById('foglayer_01'),
-        document.getElementById('foglayer_02'),
-        document.getElementById('foglayer_03')
-    ];
+    const backgroundEl = document.getElementById('background');
 
-    // --- State and Config ---
+    // State
     let rotation = 0;
+    const rotationStep = -0.2;
     let isPlaying = false;
     let animationFrameId = null;
+    let vantaEffect = null;
 
-    // --- Core Functions ---
+    // Helpers
     function rotateImage() {
-        rotation = (rotation + 0.1) % 360;
-        if(profileImage) {
+        rotation = (rotation + rotationStep + 360) % 360;
+        if (profileImage) {
             profileImage.style.transform = `rotate(${rotation}deg)`;
         }
         animationFrameId = requestAnimationFrame(rotateImage);
+    }
+
+    function startRotation() {
+        if (!animationFrameId) {
+            animationFrameId = requestAnimationFrame(rotateImage);
+        }
+    }
+
+    function stopRotation() {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
     }
 
     function updateTimestamp() {
         const now = new Date();
         const pad = num => String(num).padStart(2, '0');
         const timeString = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        if(timeDisplay) {
+        if (timeDisplay) {
             timeDisplay.textContent = timeString;
         }
     }
-    
-    // Logic for interactive fog
-    function handleMouseMove(e) {
-        const { clientX, clientY } = e;
-        const { innerWidth, innerHeight } = window;
-        const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-        const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
 
-        if (fogLayers[0] && fogLayers[1] && fogLayers[2]) {
-            fogLayers[0].style.transform = `translate(${x * 15}px, ${y * 10}px)`;
-            fogLayers[1].style.transform = `translate(${x * 8}px, ${y * 5}px)`;
-            fogLayers[2].style.transform = `translate(${x * 4}px, ${y * 2}px)`;
+    function updatePlaybackUI(playing) {
+        isPlaying = playing;
+        if (overlayIcon) {
+            overlayIcon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+        }
+        if (playing) {
+            startRotation();
+        } else {
+            stopRotation();
         }
     }
 
-    // --- Event Listeners ---
-    document.addEventListener('mousemove', handleMouseMove);
+    function toggleAudio() {
+        if (!audio) {
+            return;
+        }
 
-    if(playPauseBtn) {
-        playPauseBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                playPauseBtn.querySelector('i').className = 'fas fa-play';
-                fogContainer.classList.remove('visible');
-            } else {
-                audio.play().then(() => {
-                    playPauseBtn.querySelector('i').className = 'fas fa-pause';
-                    fogContainer.classList.add('visible');
-                }).catch(error => console.error("Audio playback failed:", error));
+        if (isPlaying) {
+            audio.pause();
+            updatePlaybackUI(false);
+        } else {
+            audio.play().then(() => {
+                updatePlaybackUI(true);
+            }).catch(err => console.error('Audio playback failed:', err));
+        }
+    }
+
+    // Audio controls
+    if (imageControl && audio) {
+        imageControl.addEventListener('click', toggleAudio);
+        imageControl.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleAudio();
             }
-            isPlaying = !isPlaying;
         });
     }
 
-    if(audio) {
+    if (audio) {
+        audio.addEventListener('play', () => updatePlaybackUI(true));
+        audio.addEventListener('pause', () => updatePlaybackUI(false));
         audio.addEventListener('ended', () => {
             if (!audio.loop) {
-                isPlaying = false;
-                playPauseBtn.querySelector('i').className = 'fas fa-play';
-                fogContainer.classList.remove('visible');
+                updatePlaybackUI(false);
             }
         });
     }
 
-    if(volumeSlider) {
-        volumeSlider.addEventListener('input', (e) => {
-            audio.volume = e.target.value / 100;
-        });
-    }
-
-    if(searchForm) {
-        searchForm.addEventListener('submit', (e) => {
+    if (searchForm && searchQuestion) {
+        searchForm.addEventListener('submit', e => {
             e.preventDefault();
             const query = searchQuestion.value.trim();
-            if(query) {
+            if (query) {
                 const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
                 window.open(searchUrl, '_blank');
                 searchQuestion.value = '';
@@ -100,19 +108,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden && animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = null;
-        } else if (!document.hidden && !animationFrameId) {
-            animationFrameId = requestAnimationFrame(rotateImage);
+        if (document.hidden) {
+            stopRotation();
+        } else if (isPlaying) {
+            startRotation();
         }
     });
 
-    // --- Initializations ---
-    animationFrameId = requestAnimationFrame(rotateImage);
+    // Vanta background
+    function initVanta() {
+        if (!(window.VANTA && window.VANTA.CLOUDS) || !backgroundEl) {
+            console.warn('Vanta.js could not be initialized.');
+            return;
+        }
+
+        if (vantaEffect) {
+            vantaEffect.destroy();
+        }
+
+        vantaEffect = window.VANTA.CLOUDS({
+            el: backgroundEl,
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: window.innerHeight,
+            minWidth: window.innerWidth,
+            skyColor: 0x050505,
+            cloudColor: 0x4a4a55,
+            cloudShadowColor: 0x1b1b1f,
+            sunColor: 0x0,
+            sunGlareColor: 0x0,
+            sunlightColor: 0x0,
+            textureScale: 1.5,
+            speed: 0.35
+        });
+    }
+
+    initVanta();
+
+    window.addEventListener('resize', () => {
+        if (vantaEffect) {
+            vantaEffect.resize();
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (vantaEffect) {
+            vantaEffect.destroy();
+            vantaEffect = null;
+        }
+    });
+
+    // Initial setup
     setInterval(updateTimestamp, 1000);
     updateTimestamp();
-    if(audio && volumeSlider) {
-        audio.volume = volumeSlider.value / 100;
+    if (audio) {
+        audio.volume = 0.7;
     }
 });

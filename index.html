@@ -4,46 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOTHING</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Link to your external CSS file -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="fog-container">
-        <div id="foglayer_01" class="fog"><div class="image01"></div><div class="image02"></div></div>
-        <div id="foglayer_02" class="fog"><div class="image01"></div><div class="image02"></div></div>
-        <div id="foglayer_03" class="fog"><div class="image01"></div><div class="image02"></div></div>
-    </div>
-
-    <!-- The main container with the original two-column layout -->
+    <div id="background"></div>
+    <div class="background-overlay"></div>
     <div class="container">
         <div class="text-section">
             <h1>Hey, I'm <span>NOTHING</span></h1>
-            <p class="subtitle">and I have nothing to say</p>
-            <p class="comeback-text">Come back later, mb you'll find something new</p>
-            <!-- New phrase added here -->
             <p class="permanent-message">...yet in nothing, there is everything.</p>
-            <p class="music-text">While you're here, enjoy my favorite song ♪</p>
             <div class="timestamp"><span id="current-time"></span></div>
             <div class="music-player">
                 <audio id="background-music" loop>
                     <source src="music.mp3" type="audio/mp3">
                     Your browser does not support the audio element.
                 </audio>
-                <button id="play-pause" class="music-control"><i class="fas fa-play"></i></button>
-                <div class="volume-control">
-                    <i class="fas fa-volume-up"></i>
-                    <input type="range" id="volume-slider" min="0" max="100" value="70">
-                </div>
             </div>
         </div>
         <div class="image-section">
-            <img id="profile-image" src="./images/profile.jpg" alt="Person looking down a road">
+            <div class="image-wrapper" id="image-control" role="button" tabindex="0" aria-label="Toggle music playback">
+                <img id="profile-image" src="./images/profile.jpg" alt="Person looking down a road">
+                <div class="image-overlay">
+                    <div class="overlay-icon">
+                        <i id="image-overlay-icon" class="fas fa-play" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- The search bar is now outside the main container to not interfere with the layout -->
     <footer class="search-bar">
         <form id="search-form">
             <label for="search-question">If you have a question,</label>
@@ -52,7 +41,8 @@
         </form>
     </footer>
 
-    <!-- Link to your external JS file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
